@@ -62,7 +62,7 @@ class Company(Crawler):
                 get_address = p_tags[1].getText()
                 get_phone_number = p_tags[2].getText()
 
-            # not logo but address
+            # not logo but have address
             else:
                 contact_tag = tag.find_all("div", {"class": "h-auto clearfix mt-3"})
                 p_tags = contact_tag[0].find_all("p", {"class": "m-0"})
@@ -112,7 +112,4 @@ for page_number in range(1, TOTAL_PAGE_NUMBER + 1):
         for num_page_industry in range(1, total_page_industry + 1):
             company = Company(Industry[0], num_page_industry)
             total_company_number.extend(company.get_company_list())
-            break
-        break
-    break
 export_excel(total_company_number)
