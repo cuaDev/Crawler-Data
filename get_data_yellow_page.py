@@ -42,42 +42,42 @@ class Company(Crawler):
             get_name_company = tag.find("h2").getText()
 
             # Get link to website
-            a_tag = tag.find("a", {"class": "text-success"})
-            if a_tag is not None:
-                website_company = a_tag.get("href")
+            web_link_tag = tag.find("a", {"class": "text-success"})
+            if web_link_tag is not None:
+                get_website_company = web_link_tag.get("href")
             else:
-                website_company = "None"
+                get_website_company = "None"
 
             # Get authentication
             authen_tag = tag.find("p", {"class": "m-0 pb-0 pt-1 hienthi_pc"})
             get_authentication = authen_tag.getText()
 
             # Get contact
-            get_contact = tag.find_all("div", {"class": "yp_div_logo_diachi clearfix"})
+            contact_tag = tag.find_all("div", {"class": "yp_div_logo_diachi clearfix"})
 
             # logo and address
-            if len(get_contact) != 0:
-                p_tags = get_contact[0].find_all("p", {"class": "m-0"})
-                logo = p_tags[0].find("img").get("src")
-                address = p_tags[1].getText()
-                phone_number = p_tags[2].getText()
+            if len(contact_tag) != 0:
+                p_tags = contact_tag[0].find_all("p", {"class": "m-0"})
+                get_logo = p_tags[0].find("img").get("src")
+                get_address = p_tags[1].getText()
+                get_phone_number = p_tags[2].getText()
 
             # not logo but address
             else:
-                get_contact = tag.find_all("div", {"class": "h-auto clearfix mt-3"})
-                p_tags = get_contact[0].find_all("p", {"class": "m-0"})
-                logo = "None"
-                address = p_tags[0].getText()
-                phone_number = p_tags[1].getText()
+                contact_tag = tag.find_all("div", {"class": "h-auto clearfix mt-3"})
+                p_tags = contact_tag[0].find_all("p", {"class": "m-0"})
+                get_logo = "None"
+                get_address = p_tags[0].getText()
+                get_phone_number = p_tags[1].getText()
 
             company_list.append(
                 {
                     "company": get_name_company,
-                    "website": website_company,
+                    "website": get_website_company,
                     "authentication": get_authentication,
-                    "logo": logo,
-                    "address": address,
-                    "phone_number": phone_number,
+                    "logo": get_logo,
+                    "address": get_address,
+                    "phone_number": get_phone_number,
                 }
             )
         return company_list
@@ -112,7 +112,7 @@ for page_number in range(1, TOTAL_PAGE_NUMBER + 1):
         for num_page_industry in range(1, total_page_industry + 1):
             company = Company(Industry[0], num_page_industry)
             total_company_number.extend(company.get_company_list())
-
+            break
         break
     break
 export_excel(total_company_number)
